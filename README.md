@@ -97,6 +97,7 @@ $ flog -f rfc3164 -l
 - RFC5424
 - Common log fomat
 - JSON
+- Spring boot default
 
 ## Supported Outputs
 
