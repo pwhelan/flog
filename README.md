@@ -59,8 +59,7 @@ Options:
                            "bytes" will be ignored when "number" is set.
   -s, --sleep duration     fix creation time interval for each log (default unit "seconds"). It does not actually sleep.
                            examples: 10, 20ms, 5s, 1m
-  -d, --delay duration     delay log generation speed (default unit "seconds").
-                           examples: 10, 20ms, 5s, 1m
+  -r, --rate rate          # of logs per second
   -p, --split-by integer   set the maximum number of lines or maximum size in bytes of a log file.
                            with "number" option, the logs will be split whenever the maximum number of lines is reached.
                            with "byte" option, the logs will be split whenever the maximum size in bytes is reached.

@@ -37,8 +37,8 @@ Options:
                            "bytes" will be ignored when "number" is set.
   -s, --sleep duration     fix creation time interval for each log (default unit "seconds"). It does not actually sleep.
                            examples: 10, 20ms, 5s, 1m
-  -d, --delay duration     delay log generation speed (default unit "seconds").
-                           examples: 10, 20ms, 5s, 1m
+  -r, --rate rate          # of logs per second
+
   -p, --split-by integer   set the maximum number of lines or maximum size in bytes of a log file.
                            with "number" option, the logs will be split whenever the maximum number of lines is reached.
                            with "byte" option, the logs will be split whenever the maximum size in bytes is reached.
@@ -57,7 +57,7 @@ type Option struct {
 	Number    int
 	Bytes     int
 	Sleep     time.Duration
-	Delay     time.Duration
+	Rate      int
 	SplitBy   int
 	Overwrite bool
 	Forever   bool
@@ -88,7 +88,7 @@ func defaultOptions() *Option {
 		Number:    1000,
 		Bytes:     0,
 		Sleep:     0.0,
-		Delay:     0.0,
+		Rate:      100,
 		SplitBy:   0,
 		Overwrite: false,
 		Forever:   false,
@@ -119,6 +119,13 @@ func ParseNumber(lines int) (int, error) {
 	return lines, nil
 }
 
+func ParseRate(rate int) (int, error) {
+	if rate < 0 {
+		return 0, errors.New("rate cannot be negative")
+	}
+	return rate, nil
+}
+
 // ParseBytes validates the given bytes
 func ParseBytes(bytes int) (int, error) {
 	if bytes < 0 {
@@ -140,21 +147,6 @@ func ParseSleep(sleepString string) (time.Duration, error) {
 		return 0.0, errors.New("sleep time must be positive")
 	}
 	return time.Duration(sleep * float64(time.Second)), nil
-}
-
-// ParseDelay validates the given sleep
-func ParseDelay(delayString string) (time.Duration, error) {
-	if strings.ContainsAny(delayString, "nsuµmh") {
-		return time.ParseDuration(delayString)
-	}
-	delay, err := strconv.ParseFloat(delayString, 64)
-	if err != nil {
-		return 0, err
-	}
-	if delay < 0 {
-		return 0.0, errors.New("delay time must be positive")
-	}
-	return time.Duration(delay * float64(time.Second)), nil
 }
 
 // ParseSplitBy validates the given split-by
@@ -179,7 +171,7 @@ func ParseOptions() *Option {
 	number := pflag.IntP("number", "n", opts.Number, "Number of lines to generate")
 	bytes := pflag.IntP("bytes", "b", opts.Bytes, "Size of logs to generate. (in bytes)")
 	sleepString := pflag.StringP("sleep", "s", "0s", "Creation time interval (default unit: seconds)")
-	delayString := pflag.StringP("delay", "d", "0s", "Log generation speed (default unit: seconds)")
+	rate := pflag.IntP("rate", "r", opts.Number, "Logs per second")
 	splitBy := pflag.IntP("split", "p", opts.SplitBy, "Maximum number of lines or size of a log file")
 	overwrite := pflag.BoolP("overwrite", "w", false, "Overwrite the existing log files")
 	forever := pflag.BoolP("loop", "l", false, "Loop output forever until killed")
@@ -209,7 +201,7 @@ func ParseOptions() *Option {
 	if opts.Sleep, err = ParseSleep(*sleepString); err != nil {
 		errorExit(err)
 	}
-	if opts.Delay, err = ParseDelay(*delayString); err != nil {
+	if opts.Rate, err = ParseRate(*rate); err != nil {
 		errorExit(err)
 	}
 	if opts.SplitBy, err = ParseSplitBy(*splitBy); err != nil {

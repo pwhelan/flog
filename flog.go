@@ -21,10 +21,6 @@ func Generate(option *Option) error {
 		delay    time.Duration
 	)
 
-	if option.Delay > 0 {
-		interval = option.Delay
-		delay = interval
-	}
 	if option.Sleep > 0 {
 		interval = option.Sleep
 	}
@@ -37,10 +33,14 @@ func Generate(option *Option) error {
 
 	if option.Forever {
 		for {
-			time.Sleep(delay)
-			log := NewLog(option.Format, created)
-			_, _ = writer.Write([]byte(log + "\n"))
-			created = created.Add(interval)
+			start := time.Now()
+			for i := 0; i < option.Rate; i++ {
+				log := NewLog(option.Format, created)
+				_, _ = writer.Write([]byte(log + "\n"))
+				created = created.Add(interval)
+			}
+			elapsed := time.Since(start)
+			time.Sleep(time.Second - elapsed)
 		}
 	}
 
