@@ -35,7 +35,7 @@ func Generate(option *Option) error {
 		for {
 			start := time.Now()
 			for i := 0; i < option.Rate; i++ {
-				log := NewLog(option.Format, created)
+				log := NewLog(option.Format, created, option.Bytes)
 				_, _ = writer.Write([]byte(log + "\n"))
 				created = created.Add(interval)
 			}
@@ -44,34 +44,14 @@ func Generate(option *Option) error {
 		}
 	}
 
-	if option.Bytes == 0 {
+	if option.Number > 0 {
 		// Generates the logs until the certain number of lines is reached
 		for line := 0; line < option.Number; line++ {
 			time.Sleep(delay)
-			log := NewLog(option.Format, created)
+			log := NewLog(option.Format, created, option.Bytes)
 			_, _ = writer.Write([]byte(log + "\n"))
 
 			if (option.Type != "stdout") && (option.SplitBy > 0) && (line > option.SplitBy*splitCount) {
-				_ = writer.Close()
-				fmt.Println(logFileName, "is created.")
-
-				logFileName = NewSplitFileName(option.Output, splitCount)
-				writer, _ = NewWriter(option.Type, logFileName)
-
-				splitCount++
-			}
-			created = created.Add(interval)
-		}
-	} else {
-		// Generates the logs until the certain size in bytes is reached
-		bytes := 0
-		for bytes < option.Bytes {
-			time.Sleep(delay)
-			log := NewLog(option.Format, created)
-			_, _ = writer.Write([]byte(log + "\n"))
-
-			bytes += len(log)
-			if (option.Type != "stdout") && (option.SplitBy > 0) && (bytes > option.SplitBy*splitCount+1) {
 				_ = writer.Close()
 				fmt.Println(logFileName, "is created.")
 
@@ -114,24 +94,24 @@ func NewWriter(logType string, logFileName string) (io.WriteCloser, error) {
 }
 
 // NewLog creates a log for given format
-func NewLog(format string, t time.Time) string {
+func NewLog(format string, t time.Time, length int) string {
 	switch format {
 	case "apache_common":
 		return NewApacheCommonLog(t)
 	case "apache_combined":
 		return NewApacheCombinedLog(t)
 	case "apache_error":
-		return NewApacheErrorLog(t)
+		return NewApacheErrorLog(t, length)
 	case "rfc3164":
-		return NewRFC3164Log(t)
+		return NewRFC3164Log(t, length)
 	case "rfc5424":
-		return NewRFC5424Log(t)
+		return NewRFC5424Log(t, length)
 	case "common_log":
 		return NewCommonLogFormat(t)
 	case "json":
 		return NewJSONLogFormat(t)
 	case "spring_boot":
-		return NewSpringBootLogFormat(t)
+		return NewSpringBootLogFormat(t, length)
 	default:
 		return ""
 	}

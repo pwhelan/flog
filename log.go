@@ -27,6 +27,18 @@ const (
 	SpringBootLogFormat = "%s %s %s --- [%s] %s: %s"
 )
 
+func message(length int) string {
+	if length < 1 {
+		return ""
+	}
+
+	msg := gofakeit.Word()
+	for len(msg) <= length {
+		msg = msg + " " + gofakeit.Word()
+	}
+	return msg[:length-1]
+}
+
 // NewApacheCommonLog creates a log string with apache common log format
 func NewApacheCommonLog(t time.Time) string {
 	return fmt.Sprintf(
@@ -60,8 +72,8 @@ func NewApacheCombinedLog(t time.Time) string {
 }
 
 // NewApacheErrorLog creates a log string with apache error log format
-func NewApacheErrorLog(t time.Time) string {
-	return fmt.Sprintf(
+func NewApacheErrorLog(t time.Time, length int) string {
+	preMsg := fmt.Sprintf(
 		ApacheErrorLog,
 		t.Format(ApacheError),
 		gofakeit.Word(),
@@ -72,11 +84,12 @@ func NewApacheErrorLog(t time.Time) string {
 		gofakeit.Number(1, 65535),
 		gofakeit.HackerPhrase(),
 	)
+	return preMsg + message(length-len(preMsg))
 }
 
 // NewRFC3164Log creates a log string with syslog (RFC3164) format
-func NewRFC3164Log(t time.Time) string {
-	return fmt.Sprintf(
+func NewRFC3164Log(t time.Time, length int) string {
+	preMsg := fmt.Sprintf(
 		RFC3164Log,
 		gofakeit.Number(0, 191),
 		t.Format(RFC3164),
@@ -85,11 +98,12 @@ func NewRFC3164Log(t time.Time) string {
 		gofakeit.Number(1, 10000),
 		gofakeit.HackerPhrase(),
 	)
+	return preMsg + message(length-len(preMsg))
 }
 
 // NewRFC5424Log creates a log string with syslog (RFC5424) format
-func NewRFC5424Log(t time.Time) string {
-	return fmt.Sprintf(
+func NewRFC5424Log(t time.Time, length int) string {
+	preMsg := fmt.Sprintf(
 		RFC5424Log,
 		gofakeit.Number(0, 191),
 		gofakeit.Number(1, 3),
@@ -101,6 +115,7 @@ func NewRFC5424Log(t time.Time) string {
 		"-", // TODO: structured data
 		gofakeit.HackerPhrase(),
 	)
+	return preMsg + message(length-len(preMsg))
 }
 
 // NewCommonLogFormat creates a log string with common log format
@@ -135,8 +150,8 @@ func NewJSONLogFormat(t time.Time) string {
 }
 
 // NewSpringBootLogFormat creates a log string with spring boot default format
-func NewSpringBootLogFormat(t time.Time) string {
-	return fmt.Sprintf(
+func NewSpringBootLogFormat(t time.Time, length int) string {
+	preMsg := fmt.Sprintf(
 		SpringBootLogFormat,
 		t.Format(Java),
 		strings.ToUpper(gofakeit.LogLevel("general")),
@@ -145,4 +160,5 @@ func NewSpringBootLogFormat(t time.Time) string {
 		gofakeit.DomainSuffix()+"."+gofakeit.BS()+"."+gofakeit.Word()+"."+gofakeit.FirstName(),
 		gofakeit.HackerPhrase(),
 	)
+	return preMsg + message(length-len(preMsg))
 }

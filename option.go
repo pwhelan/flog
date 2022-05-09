@@ -20,9 +20,9 @@ Version: %s
 
 Options:
   -f, --format string      log format. available formats:
-                           - apache_common (default)
+                           - apache_common
                            - apache_combined
-                           - apache_error
+                           - apache_error (default)
                            - rfc3164
                            - rfc5424
                            - json
@@ -33,8 +33,7 @@ Options:
                            - log
                            - gz
   -n, --number integer     number of lines to generate.
-  -b, --bytes integer      size of logs to generate (in bytes).
-                           "bytes" will be ignored when "number" is set.
+  -b, --bytes integer      size of log line to generate in bytes (default 512).
   -s, --sleep duration     fix creation time interval for each log (default unit "seconds"). It does not actually sleep.
                            examples: 10, 20ms, 5s, 1m
   -r, --rate rate          # of logs per second
@@ -82,11 +81,11 @@ func errorExit(err error) {
 
 func defaultOptions() *Option {
 	return &Option{
-		Format:    "apache_common",
+		Format:    "apache_error",
 		Output:    "generated.log",
 		Type:      "stdout",
 		Number:    1000,
-		Bytes:     0,
+		Bytes:     512,
 		Sleep:     0.0,
 		Rate:      100,
 		SplitBy:   0,
@@ -169,7 +168,7 @@ func ParseOptions() *Option {
 	output := pflag.StringP("output", "o", opts.Output, "Path-like output filename")
 	logType := pflag.StringP("type", "t", opts.Type, "Log output type")
 	number := pflag.IntP("number", "n", opts.Number, "Number of lines to generate")
-	bytes := pflag.IntP("bytes", "b", opts.Bytes, "Size of logs to generate. (in bytes)")
+	bytes := pflag.IntP("bytes", "b", opts.Bytes, "Size of log records to generate in bytes (default 512)")
 	sleepString := pflag.StringP("sleep", "s", "0s", "Creation time interval (default unit: seconds)")
 	rate := pflag.IntP("rate", "r", opts.Number, "Logs per second")
 	splitBy := pflag.IntP("split", "p", opts.SplitBy, "Maximum number of lines or size of a log file")
