@@ -42,9 +42,9 @@ There are useful options. (`flog --help`)
 ```console
 Options:
   -f, --format string      log format. available formats:
-                           - apache_common (default)
+                           - apache_common
                            - apache_combined
-                           - apache_error
+                           - apache_error (default)
                            - rfc3164
                            - rfc5424
                            - json
@@ -55,7 +55,7 @@ Options:
                            - log
                            - gz
   -n, --number integer     number of lines to generate.
-  -b, --bytes integer      size of logs to generate (in bytes).
+  -b, --bytes integer      size of log line to generate in bytes (default 512).
                            "bytes" will be ignored when "number" is set.
   -s, --sleep duration     fix creation time interval for each log (default unit "seconds"). It does not actually sleep.
                            examples: 10, 20ms, 5s, 1m
