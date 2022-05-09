@@ -17,15 +17,15 @@ func ExampleNewLog() {
 	defer monkey.Unpatch(time.Now)
 
 	created := time.Now()
-	fmt.Println(NewLog("apache_common", created))
-	fmt.Println(NewLog("apache_combined", created))
-	fmt.Println(NewLog("apache_error", created))
-	fmt.Println(NewLog("rfc3164", created))
-	fmt.Println(NewLog("rfc5424", created))
-	fmt.Println(NewLog("common_log", created))
-	fmt.Println(NewLog("unknown", created))
-	fmt.Println(NewLog("json", created))
-	fmt.Println(NewLog("spring_boot", created))
+	fmt.Println(NewLog("apache_common", created, 512))
+	fmt.Println(NewLog("apache_combined", created, 512))
+	fmt.Println(NewLog("apache_error", created, 512))
+	fmt.Println(NewLog("rfc3164", created, 512))
+	fmt.Println(NewLog("rfc5424", created, 512))
+	fmt.Println(NewLog("common_log", created, 512))
+	fmt.Println(NewLog("unknown", created, 512))
+	fmt.Println(NewLog("json", created, 512))
+	fmt.Println(NewLog("spring_boot", created, 512))
 	// Output:
 	// 222.83.191.222 - - [22/Apr/2018:09:30:00 +0000] "DELETE /innovate/next-generation HTTP/1.1" 406 7610
 	// 144.199.149.125 - waelchi7603 [22/Apr/2018:09:30:00 +0000] "PUT /revolutionary HTTP/1.1" 301 8089 "https://www.futureaggregate.io/users" "Mozilla/5.0 (Macintosh; PPC Mac OS X 10_6_5 rv:4.0; en-US) AppleWebKit/536.38.2 (KHTML, like Gecko) Version/6.0 Safari/536.38.2"
