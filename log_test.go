@@ -39,7 +39,7 @@ func ExampleNewApacheErrorLog() {
 	defer monkey.Unpatch(time.Now)
 
 	created := time.Now()
-	fmt.Println(NewApacheErrorLog(created))
+	fmt.Println(NewApacheErrorLog(created, 512))
 	// Output: [Sun Apr 22 09:30:00 2018] [quia:crit] [pid 4214:tid 6037] [client 90.151.9.107:14075] Copying the protocol won't do anything, we need to copy the redundant SAS program!
 }
 
@@ -50,7 +50,7 @@ func ExampleNewRFC3164Log() {
 	defer monkey.Unpatch(time.Now)
 
 	created := time.Now()
-	fmt.Println(NewRFC3164Log(created))
+	fmt.Println(NewRFC3164Log(created, 512))
 	// Output: <24>Apr 22 09:30:00 moen8727 quo[3160]: If we back up the program, we can get to the SSL sensor through the redundant SAS program!
 }
 
@@ -61,7 +61,7 @@ func ExampleNewRFC5424Log() {
 	defer monkey.Unpatch(time.Now)
 
 	created := time.Now()
-	fmt.Println(NewRFC5424Log(created))
+	fmt.Println(NewRFC5424Log(created, 512))
 	// Output: <24>3 2018-04-22T09:30:00.000Z futurefunctionalities.biz nisi 9030 ID160 - If we back up the program, we can get to the SSL sensor through the redundant SAS program!
 }
 
@@ -94,6 +94,6 @@ func ExampleNewSpringBootLogFormat() {
 	defer monkey.Unpatch(time.Now)
 
 	created := time.Now()
-	fmt.Println(NewSpringBootLogFormat(created))
+	fmt.Println(NewSpringBootLogFormat(created, 512))
 	// Output: 2018-04-22 09:30:00.000 DEBUG 18188 --- [flexibility] net.recontextualize.iusto.Freda: I'Ll navigate the virtual JSON circuit, that should program the CSS pixel!
 }
