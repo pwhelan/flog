@@ -35,7 +35,7 @@ func Generate(option *Option) error {
 		for {
 			start := time.Now()
 			for i := 0; i < option.Rate; i++ {
-				log := NewLog(option.Format, created, option.Bytes)
+				log := `{"level":"warn","ts":"2021-05-18T09:58:24.423Z","msg":"client Profile already loaded doniv","hostname":"ovk8mp-perf-060-12-nq9yk-57967d89b7-h4vdx","pid":"1","src":"profile@v0.6.0-rc.4/client.go:542","stacktrace":"go.uber.org/zap.Stack\\n\\t/go/pkg/mod/go.uber.org/zap@v1.4.1/field.go:209\\ngo.uber.org/zap.(*Logger).check\\n\\t/go/pkg/mod/go.uber.org/zap@v1.4.1/logger.go:273\\ngo.uber.org/zap.(*Logger).Warn\\n\\t/go/pkg/mod/go.uber.org/zap@v1.4.1/logger.go:168\\nvisa.com/ovn/commons/logging.(*Logger).Warn\\n\\t/go/pkg/mod/visa.com/ovn/commons@v0.6.0-rc.2/logging/logger.go:92\\nvisa.com/ovn/components/profile.(*Client).loadProfile\\n\\t/go/pkg/mod/visa.com/ovn/components/profile@v0.6.0-rc.4/client.go:542\\nvisa.com/ovn/components/profile.(*Client).openProfilesToLoad\\n\\t/go/pkg/mod/visa.com/ovn/components/profile@v0.6.0-rc.4/client.go:203\\nvisa.com/ovn/components/profile.(*Client).selfHeal\\n\\t/go/pkg/mod/visa.com/ovn/components/profile@v0.6.0-rc.4/client.go:358\\nvisa.com/ovn/components/profile.(*Client).refreshHealth\\n\\t/go/pkg/mod/visa.com/ovn/components/profile@v0.6.0-rc.4/client.go:326\\nvisa.com/ovn/components/profile.(*Client).Readiness\\n\\t/go/pkg/mod/visa.com/ovn/components/profile@v0.6.0-rc.4/client.go:316\\nvisa.com/ovn/commons/health.invokeRoutine\\n\\t/go/pkg/mod/visa.com/ovn/commons@v0.6.0-rc.2/health/healthmonitor.go:138}\n"}`
 				_, _ = writer.Write([]byte(log + "\n"))
 				created = created.Add(interval)
 			}
