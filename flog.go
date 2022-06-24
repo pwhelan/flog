@@ -33,14 +33,27 @@ func Generate(option *Option) error {
 
 	if option.Forever {
 		for {
+			writtenBytes := 0
 			start := time.Now()
+			log := ""
 			for i := 0; i < option.Rate; i++ {
-				log := NewLog(option.Format, created, option.Bytes)
+				log = NewLog(option.Format, created, option.Bytes)
 				_, _ = writer.Write([]byte(log + "\n"))
 				created = created.Add(interval)
 			}
 			elapsed := time.Since(start)
 			time.Sleep(time.Second - elapsed)
+			writtenBytes += len(log) * option.Rate
+			if (option.Type != "stdout") && (option.SplitBy > 0) && (writtenBytes > option.SplitBy) {
+				writer.Close()
+				fmt.Printf("File %s is created\n", logFileName)
+				splitCount++
+				logFileName = NewSplitFileName(option.Output, splitCount)
+				writer, err = NewWriter(option.Type, logFileName)
+				if err != nil {
+
+				}
+			}
 		}
 	}
 
