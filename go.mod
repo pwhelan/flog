@@ -6,7 +6,6 @@ require (
 	bou.ke/monkey v1.0.1
 	github.com/brianvoe/gofakeit v3.18.0+incompatible
 	github.com/davecgh/go-spew v1.1.0 // indirect
-	github.com/fatih/color v1.13.0 // indirect
 	github.com/logrusorgru/aurora v2.0.3+incompatible // indirect
 	github.com/mattn/go-colorable v0.1.12 // indirect
 	github.com/mingrammer/cfmt v1.1.0
