@@ -42,7 +42,7 @@ func Generate(option *Option) error {
 				created = created.Add(interval)
 			}
 			elapsed := time.Since(start)
-			_, _ = writer.Write([]byte("wrote " + strconv.Itoa(option.Rate) + " logs in " + elapsed.String() + "iteration: " + strconv.Itoa(counter) + "\n"))
+			_, _ = writer.Write([]byte(time.Now().String() + " wrote " + strconv.Itoa(option.Rate) + " logs in " + elapsed.String() + " iteration: " + strconv.Itoa(counter) + "\n"))
 			time.Sleep(time.Second - elapsed)
 		}
 	} else {
