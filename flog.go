@@ -76,7 +76,7 @@ func Generate(option *Option) error {
 		_ = writer.Close()
 		fmt.Println(logFileName, "is created.")
 	}
-	time.Sleep(time.Second * option.Sleep)
+	time.Sleep(option.Sleep)
 
 	return nil
 }
