@@ -33,6 +33,7 @@ func Generate(option *Option) error {
 	}
 
 	if option.Forever {
+		_, _ = flogWriter.Write([]byte("flog started at " + created.Format(time.RFC3339)))
 		for counter := 0; counter < option.Number/option.Rate; counter++ {
 			start := time.Now()
 			log := ""
@@ -75,6 +76,8 @@ func Generate(option *Option) error {
 		_ = writer.Close()
 		fmt.Println(logFileName, "is created.")
 	}
+	time.Sleep(time.Second * option.Sleep)
+
 	return nil
 }
 
