@@ -27,6 +27,7 @@ func Generate(option *Option) error {
 
 	logFileName := option.Output
 	writer, err := NewWriter(option.Type, logFileName)
+	flogWriter, err := NewWriter(option.Type, "flog.tlog")
 	if err != nil {
 		return err
 	}
@@ -43,7 +44,7 @@ func Generate(option *Option) error {
 				created = created.Add(interval)
 			}
 			elapsed := time.Since(start)
-			_, _ = writer.Write([]byte(time.Now().String() + " wrote " + strconv.Itoa(option.Rate) + " logs in " + elapsed.String() + " iteration: " + strconv.Itoa(counter) + "\n"))
+			_, _ = flogWriter.Write([]byte(time.Now().String() + " wrote " + strconv.Itoa(option.Rate) + " logs in " + elapsed.String() + " iteration: " + strconv.Itoa(counter) + "\n"))
 			time.Sleep(time.Second - elapsed)
 		}
 	} else {
@@ -69,6 +70,7 @@ func Generate(option *Option) error {
 		}
 	}
 
+	_ = flogWriter.Close()
 	if option.Type != "stdout" {
 		_ = writer.Close()
 		fmt.Println(logFileName, "is created.")
