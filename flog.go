@@ -71,12 +71,15 @@ func Generate(option *Option) error {
 		}
 	}
 
+	_, _ = flogWriter.Write([]byte("flog finished at " + time.Now().Format(time.RFC3339)))
+	_, _ = flogWriter.Write([]byte("will wait for " + option.Sleep.String() + " before exiting"))
 	_ = flogWriter.Close()
+
+	time.Sleep(option.Sleep)
 	if option.Type != "stdout" {
 		_ = writer.Close()
 		fmt.Println(logFileName, "is created.")
 	}
-	time.Sleep(option.Sleep)
 
 	return nil
 }
