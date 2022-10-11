@@ -71,8 +71,8 @@ func Generate(option *Option) error {
 		}
 	}
 
-	_, _ = flogWriter.Write([]byte("flog finished at " + time.Now().Format(time.RFC3339)))
-	_, _ = flogWriter.Write([]byte("will wait for " + option.Sleep.String() + " before exiting"))
+	_, _ = flogWriter.Write([]byte("flog finished at " + time.Now().Format(time.RFC3339) + "\n"))
+	_, _ = flogWriter.Write([]byte("will wait for " + option.Sleep.String() + " before exiting\n"))
 	_ = flogWriter.Close()
 
 	time.Sleep(option.Sleep)
