@@ -27,7 +27,7 @@ func Generate(option *Option) error {
 
 	logFileName := option.Output
 	writer, err := NewWriter(option.Type, logFileName)
-	flogWriter, err := NewWriter(option.Type, "flog.tlog")
+	flogWriter, err := NewWriter("log", "flog.tlog")
 	if err != nil {
 		return err
 	}
